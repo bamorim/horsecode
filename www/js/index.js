@@ -40,7 +40,6 @@ var app = {
             char = [],
             received = [];
         var socket = io.connect("http://horsecode.herokuapp.com/");
-        function stopTimeouts(){
         document.addEventListener("touchstart",function(){
             navigator.vibrate(100);
             current = 1;
