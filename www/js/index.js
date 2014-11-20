@@ -33,80 +33,54 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-          var a0,
-            zone = false,
-            zoneC = 0,
-            upTime,
-            la,
-            ga,
-            started = false;
-        var count = 0;
+      var current = 0,
+          longTimeout,
+          outTimeout,
+          char = [],
+          received = [];
+      var socket = io.connect("http://horsecode.herokuapp.com/");
 
         document.addEventListener("touchstart",function(){
-          document.getElementById("e").innerHTML = ++count;
+          navigator.vibrate(100);
+          current = 1;
+          longTimeout = window.setTimeout(function(){
+            current = 2;
+            navigator.vibrate(100);
+          },400);
+          window.clearTimeout(outTimeout);
+        });
+
+        document.addEventListener("touchend",function(){
+          window.clearTimeout(longTimeout);
+          char.push(current);
+          outTimeout = window.setTimeout(function(){
+            socket.emit('message',char);
+            document.getElementById("e").innerHTML = char.toString();
+          },1000);
+        });
+
+        socket.on('message',function(message){
+          alert(message);
+          var msg = char;
+          function vibrate(){
+            if(char.length == 0) return;
+            var pulse = char.pop();
+
+            if(pulse == 0)
+             setTimeout(vibrate,500);
+            if(pulse == 1){
+              navigator.vibrate(100);
+              setTimeout(vibrate,200);
+            }
+            if(pulse == 2){
+              navigator.vibrate(400);
+              setTimeout(vibrate,500);
+            }
+          }
+          vibrate();
         });
 
         app.receivedEvent('deviceready');
-        window.setInterval(function(){ga = 0; la = 0;},5000);
-        function onSuccess(accel) {
-          if(!started){
-            started = true;
-            a0 = module(accel);
-          }
-          var a = Math.ceil(10*(module(accel)-a0))/10;
-          if(a > ga){
-            ga = a;
-          }
-          if(a < la){
-            la = a;
-          }
-
-          if(!zone && a > 0.8){
-            zone = true;
-            zoneC++;
-          }
-          if(zone && a < 0.5){
-            zone = false;
-          }
-          if(zoneC == 1 && upTime == 0){
-            upTime = accel.timestamp;
-          }
-          if(zoneC == 2){
-            var char = -1,
-                t = (accel.timestamp - upTime);
-
-            if(t < 300)
-              char = 0;
-            if(t > 300 && t < 1000)
-              char = 1;
-
-            //if(char != -1)
-            //  document.getElementById("e").innerHTML += char;
-
-            upTime = 0;
-            zoneC = 0;
-          }
-          document.getElementById("ga").innerHTML = ga;
-          document.getElementById("la").innerHTML = la;
-          document.getElementById("a").innerHTML = a;
-          document.getElementById("t").innerHTML = accel.timestamp
-        };
-
-        function module(a){
-          return Math.sqrt(
-            Math.pow(a.x,2)+
-            Math.pow(a.y,2)+
-            Math.pow(a.z,2)
-          )
-        }
-
-        function onError() {
-            alert('onError!');
-        };
-
-        var options = { frequency: 10 };  // Update every 3 seconds
-
-        var watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
