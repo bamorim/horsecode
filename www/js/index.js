@@ -17,81 +17,75 @@
  * under the License.
  */
 var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-      var current = 0,
-          longTimeout,
-          outTimeout,
-          char = [],
-          received = [];
-      var socket = io.connect("http://horsecode.herokuapp.com/");
+  // Application Constructor
+  initialize: function() {
+    this.bindEvents();
+  },
+  // Bind Event Listeners
+  //
+  // Bind any events that are required on startup. Common events are:
+  // 'load', 'deviceready', 'offline', and 'online'.
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  // deviceready Event Handler
+  //
+  // The scope of 'this' is the event. In order to call the 'receivedEvent'
+  // function, we must explicitly call 'app.receivedEvent(...);'
+  onDeviceReady: function() {
+    var current = 0,
+    longTimeout,
+    outTimeout,
+    char = [],
+    received = [];
+    var socket = io.connect("http://horsecode.herokuapp.com/");
+    document.addEventListener("touchstart",function(){
+      navigator.vibrate(100);
+      current = 1;
+      longTimeout = window.setTimeout(function(){
+        current = 2;
+        navigator.vibrate(100);
+      },400);
+      window.clearTimeout(outTimeout);
+    });
+    document.addEventListener("touchend",function(){
+      window.clearTimeout(longTimeout);
+      char.push(current);
+      outTimeout = window.setTimeout(function(){
+        socket.emit('message',char);
+        char = [];
+        document.getElementById("e").innerHTML = char.toString();
+      },1000);
+    });
+    socket.on('message',function(message){
+      function vibrate(){
+        if(message.length == 0) return;
+        var pulse = message.shift();
 
-        document.addEventListener("touchstart",function(){
-          navigator.vibrate(100);
-          current = 1;
-          longTimeout = window.setTimeout(function(){
-            current = 2;
-            navigator.vibrate(100);
-          },400);
-          window.clearTimeout(outTimeout);
-        });
-
-        document.addEventListener("touchend",function(){
-          window.clearTimeout(longTimeout);
-          char.push(current);
-          outTimeout = window.setTimeout(function(){
-            socket.emit('message',char);
-            char = [];
-            document.getElementById("e").innerHTML = char.toString();
-          },1000);
-        });
-
-        socket.on('message',function(message){
-          function vibrate(){
-            if(message.length == 0) return;
-            var pulse = message.shift();
-
-            if(pulse == 0)
-             setTimeout(vibrate,500);
-            if(pulse == 1){
-              navigator.vibrate(150);
-              setTimeout(vibrate,300);
-            }
-            if(pulse == 2){
-              navigator.vibrate(600);
-              setTimeout(vibrate,750);
-            }
-          }
-          vibrate();
-        });
-
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+        if(pulse == 0)
+          setTimeout(vibrate,500);
+        if(pulse == 1){
+          navigator.vibrate(150);
+          setTimeout(vibrate,300);
+        }
+        if(pulse == 2){
+          navigator.vibrate(600);
+          setTimeout(vibrate,750);
+        }
+      }
+      vibrate();
+    });
+    app.receivedEvent('deviceready');
+  },
+  // Update DOM on a Received Event
+  receivedEvent: function(id) {
+    var parentElement    = document.getElementById(id);
+    var listeningElement = parentElement.querySelector('.listening');
+    var receivedElement  = parentElement.querySelector('.received');
+    listeningElement.setAttribute('style', 'display:none;');
+    receivedElement.setAttribute('style', 'display:block;');
+    console.log('Received Event: ' + id);
+  }
 };
 
 app.initialize();
