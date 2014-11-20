@@ -1,6 +1,3 @@
-//tela de login
-//fila de mensagem
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.    See the NOTICE file
@@ -52,37 +49,29 @@ var app = {
             window.clearTimeout(outTimeout);
         });
         document.addEventListener("touchend",function(){
-            function startOutTimeout(){
-                outTimeout = window.setTimeout(function(){
-                    socket.emit('message',char);
-                    char = [];
-                    document.getElementById("e").innerHTML = char.toString();
-                },2000);
-            };
             window.clearTimeout(longTimeout);
             char.push(current);
-            spaceTimeout = window.setTimeout(function(){
-                char.push(3);
-                window.clearTimeout(outTimeout);
-            },450);
-            startOutTimeout();
+            outTimeout = window.setTimeout(function(){
+                socket.emit('message',char);
+                char = [];
+                document.getElementById("e").innerHTML = char.toString();
+            },1000);
         });
         socket.on('message',function(message){
             function vibrate(){
                 if(message.length == 0) return;
                 var pulse = message.shift();
+
                 if(pulse == 0)
                     setTimeout(vibrate,500);
-                if(pulse === 1){
+                if(pulse == 1){
                     navigator.vibrate(150);
                     setTimeout(vibrate,300);
                 }
-                if(pulse === 2){
+                if(pulse == 2){
                     navigator.vibrate(600);
                     setTimeout(vibrate,750);
                 }
-                if (pulse === 3)
-                    setTimeout(vibrate,500);
             }
             vibrate();
         });
@@ -90,9 +79,9 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement    = document.getElementById(id);
+        var parentElement        = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement  = parentElement.querySelector('.received');
+        var receivedElement    = parentElement.querySelector('.received');
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
         console.log('Received Event: ' + id);
