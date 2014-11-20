@@ -60,7 +60,6 @@ var app = {
         });
 
         socket.on('message',function(message){
-          alert(message);
           var msg = char;
           function vibrate(){
             if(char.length == 0) return;
