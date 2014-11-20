@@ -40,8 +40,11 @@
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/js/index.js \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/img/logo.png \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.device-motion \
+/home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.vibration \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/Acceleration.js \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/accelerometer.js \
+/home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.vibration/www \
+/home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/plugins/org.apache.cordova.vibration/www/vibration.js \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/assets/www/css/index.css \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/AndroidManifest.xml \

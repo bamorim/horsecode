@@ -1,4 +1,5 @@
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/classes.dex : \
+/home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/classes/org/apache/cordova/vibration/Vibration.class \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener.class \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener$1.class \
 /home/bamorim/ufrj/hackpuc/horsecode/platforms/android/ant-build/classes/io/cordova/hellocordova/R$attr.class \

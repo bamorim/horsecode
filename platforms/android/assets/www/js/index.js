@@ -55,25 +55,25 @@ var app = {
           char.push(current);
           outTimeout = window.setTimeout(function(){
             socket.emit('message',char);
+            char = [];
             document.getElementById("e").innerHTML = char.toString();
           },1000);
         });
 
         socket.on('message',function(message){
-          var msg = char;
           function vibrate(){
-            if(char.length == 0) return;
-            var pulse = char.pop();
+            if(message.length == 0) return;
+            var pulse = message.shift();
 
             if(pulse == 0)
              setTimeout(vibrate,500);
             if(pulse == 1){
-              navigator.vibrate(100);
-              setTimeout(vibrate,200);
+              navigator.vibrate(150);
+              setTimeout(vibrate,300);
             }
             if(pulse == 2){
-              navigator.vibrate(400);
-              setTimeout(vibrate,500);
+              navigator.vibrate(600);
+              setTimeout(vibrate,750);
             }
           }
           vibrate();
